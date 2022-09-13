@@ -13,29 +13,41 @@ namespace customers_management_app.Controllers
         public async Task<ActionResult> AllCustomers()
         {
             List<Customers> customers = new List<Customers>();
-            //List<Neighborhoods> neighborhoods = new List<Neighborhoods>();
-            HttpClient client = apiService.Main();
-            HttpResponseMessage res = await client.GetAsync("customers");
-            //HttpResponseMessage resNghb = await client.GetAsync("neighborhoods");
+            HttpClient client = new HttpClient();
+            string customersString = await client.GetStringAsync($"{ApiService.baseUrl}customers");
 
-            if (res.IsSuccessStatusCode)
+            if (customersString != null)
             {
-                var results = res.Content.ReadAsStringAsync().Result;
-                customers = JsonConvert.DeserializeObject<List<Customers>>(results);
+                customers = JsonConvert.DeserializeObject<List<Customers>>(customersString);
             }
 
-            //if (resNghb.IsSuccessStatusCode)
-            //{
-            //    var results = res.Content.ReadAsStringAsync().Result;
-            //    neighborhoods = JsonConvert.DeserializeObject<List<Neighborhoods>>(results);
-            //}
-            //ViewBag.Neighborhoods = new SelectList(neighborhoods, "NghbID", "NghbName");
             return View(customers);
         }
 
-        public ActionResult Details(int id)
+        public async Task<ActionResult> CustomerDetails(int id)
         {
-            return View();
+            Customers customer = new Customers();
+            HttpClient client = new HttpClient();
+            string customerString = await client.GetStringAsync($"{ApiService.baseUrl}customers/{id}");
+
+            List<Addresses> addresses = new List<Addresses>();
+            string addressString = await client.GetStringAsync($"{ApiService.baseUrl}addresses/addresses_by_customer/{id}");
+
+            if (customerString != null)
+            {
+                customer = JsonConvert.DeserializeObject<Customers>(customerString);
+            }
+
+            if (addressString != null)
+            {
+                addresses = JsonConvert.DeserializeObject<List<Addresses>>(addressString);
+            }
+
+            if(customer != null && addresses != null)
+            {
+                customer.Addresses = addresses;
+            }
+            return View(customer);
         }
 
         public ActionResult CreateCustomer()
@@ -44,54 +56,101 @@ namespace customers_management_app.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(Customers newCustomer)
         {
+            HttpClient client = new HttpClient();
             try
             {
-                return RedirectToAction(nameof(Index));
+                string json = JsonConvert.SerializeObject(newCustomer);
+                HttpContent content = new StringContent(json);
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                var post = await client.PostAsync($"{ApiService.baseUrl}customers", content);
+
+                if (post.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("AllCustomers", "Customers");
+                }
+
+                return RedirectToAction("AllCustomers", "Customers");
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditCustomer(int id)
         {
-            return View();
+            Customers customer = new Customers();
+            HttpClient client = new HttpClient();
+            string customerString = await client.GetStringAsync($"{ApiService.baseUrl}customers/{id}");
+
+            if (customerString != null)
+            {
+                customer = JsonConvert.DeserializeObject<Customers>(customerString);
+            }
+            return View(customer);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(Customers custEdited)
         {
+            HttpClient client = new HttpClient();
             try
             {
-                return RedirectToAction(nameof(Index));
+                string json = JsonConvert.SerializeObject(custEdited);
+                HttpContent content = new StringContent(json);
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                var put = await client.PutAsync($"{ApiService.baseUrl}customers/{custEdited.CustID}", content);
+
+                if (put.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("AllCustomers", "Customers");
+                }
+
+                return RedirectToAction("AllCustomers", "Customers");
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
         }
-
-        public ActionResult Delete(int id)
+        
+        public ActionResult AddAddress(int cust)
         {
-            return View();
+            return RedirectToAction("CreateAddress", "Addresses", new { cust = cust });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeleteCustomer(int id)
         {
+            Customers customer = new Customers();
+            HttpClient client = new HttpClient();
+            string customerString = await client.GetStringAsync($"{ApiService.baseUrl}customers/{id}");
+
+            if (customerString != null)
+            {
+                customer = JsonConvert.DeserializeObject<Customers>(customerString);
+            }
+            return View(customer);
+        }
+        
+        public async Task<ActionResult> Delete(int id)
+        {
+            HttpClient client = new HttpClient();
             try
             {
-                return RedirectToAction(nameof(Index));
+                var delete = await client.DeleteAsync($"customers/{id}");
+
+                if (delete.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("AllCustomers", "Customers");
+                }
+
+                return RedirectToAction("AllCustomers", "Customers");
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
         }
     }

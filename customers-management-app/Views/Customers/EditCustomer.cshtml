@@ -1,18 +1,22 @@
 ﻿@model customers_management_app.Models.Customers
 
 @{
-    ViewData["Title"] = "CreateCustomer";
+    ViewData["Title"] = "EditCustomer";
 }
 
-<h1>Create Customer</h1>
+<h1>Edit Customer</h1>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateCustomer">
+        <form asp-action="EditCustomer">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                @Html.HiddenFor(model => model.CustID)
+            </div>
+            <div class="form-group">
                 <label asp-for="CustFirstName" class="control-label fw-bold">First Name</label>
-                <input asp-for="CustFirstName" class="form-control" />
+                <input asp-for="CustFirstName" class="form-control"/>
                 <span asp-validation-for="CustFirstName" class="text-danger"></span>
             </div><br/>
             <div class="form-group">
@@ -21,19 +25,19 @@
                 <span asp-validation-for="CustLastName" class="text-danger"></span>
             </div><br />
             <div class="form-group">
-                <label asp-for="CustPhone" class="control-label fw-bold">Phone </label>
+                <label asp-for="CustPhone" class="control-label fw-bold">Phone</label>
                 <input asp-for="CustPhone" class="form-control" />
                 <span asp-validation-for="CustPhone" class="text-danger"></span>
             </div><br />
             <div class="form-group">
-                <input type="submit" value="Create" asp-action="Create" class="btn btn-success" />
+                <input type="submit" value="Save" asp-action="Edit" class="btn btn-success" />
             </div>
         </form>
     </div>
-</div><br/>
-
+</div>
+<br/>
 <div>
-    <a asp-action="Index" class="btn btn-info">Back to List</a>
+    <a asp-action="AllCustomers" class="btn btn-info">Back to List</a>
 </div>
 
 @section Scripts {

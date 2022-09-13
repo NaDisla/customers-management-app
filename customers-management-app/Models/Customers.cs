@@ -1,4 +1,6 @@
-﻿namespace customers_management_app.Models
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace customers_management_app.Models
 {
     public class Customers
     {
@@ -6,5 +8,6 @@
         public string CustFirstName { get; set; }
         public string CustLastName { get; set; }
         public string CustPhone { get; set; }
+        public List<Addresses> Addresses { get; set; }
     }
 }

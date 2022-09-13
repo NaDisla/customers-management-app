@@ -4,27 +4,20 @@
     ViewData["Title"] = "Customers";
 }
 
-<h1>Customers</h1>
+<h1>Company's Customers</h1>
+<br/>
 
 <p>
-    <a asp-action="CreateCustomer">Create New</a>
+    <a asp-action="CreateCustomer" class="btn btn-success">Create new customer</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CustID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustFirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustLastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustPhone)
-            </th>
-            <th></th>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -43,9 +36,9 @@
                 @Html.DisplayFor(modelItem => item.CustPhone)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "EditCustomer", new { id = item.CustID }, new {@class="btn btn-info"})
+                @Html.ActionLink("Details", "CustomerDetails", new { id = item.CustID }, new {@class="btn btn-dark"})
+                @Html.ActionLink("Add address", "AddAddress", new { cust = item.CustID}, new {@class="btn btn-primary"})
             </td>
         </tr>
 }
