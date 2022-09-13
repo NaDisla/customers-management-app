@@ -7,3 +7,14 @@
   - Bootstrap
   - MS SQL Server
   - Web API
+
+  ## Screens:
+![](ListCustomers.png)
+
+![](CreateCustomer.png)
+
+![](EditCustomer.png)
+
+![](CustomerDetails.png)
+
+![](CreateAddress.png)
