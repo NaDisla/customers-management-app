@@ -1,0 +1,33 @@
+﻿@model customers_management_app.Models.Addresses
+
+
+<div class="col-md-4">
+    <form asp-action="CreateAddress">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            @Html.DropDownList("Neighborhoods", (IEnumerable<SelectListItem>)ViewBag.Neighborhoods, "Select neighborhood")
+        </div>
+        <div class="form-group">
+            <label asp-for="AddrsStreet1" class="control-label"></label>
+            <input asp-for="AddrsStreet1" class="form-control" />
+            <span asp-validation-for="AddrsStreet1" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AddrsStreet2" class="control-label"></label>
+            <input asp-for="AddrsStreet2" class="form-control" />
+            <span asp-validation-for="AddrsStreet2" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AddrsCountry" class="control-label"></label>
+            <input asp-for="AddrsCountry" class="form-control" />
+            <span asp-validation-for="AddrsCountry" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

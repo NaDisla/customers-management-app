@@ -1,0 +1,46 @@
+﻿@model customers_management_app.Models.Customers
+
+@{
+    ViewData["Title"] = "CreateCustomer";
+}
+
+<h1>CreateCustomer</h1>
+
+<h4>Customers</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateCustomer">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustFirstName" class="control-label">First Name</label>
+                <input asp-for="CustFirstName" class="form-control" />
+                <span asp-validation-for="CustFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustLastName" class="control-label">Last Name</label>
+                <input asp-for="CustLastName" class="form-control" />
+                <span asp-validation-for="CustLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustPhone" class="control-label">Phone </label>
+                <input asp-for="CustPhone" class="form-control" />
+                <span asp-validation-for="CustPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Views/Addresses/CreateAddress.cshtml");
+    }
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
